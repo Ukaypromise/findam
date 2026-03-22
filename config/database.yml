@@ -1,0 +1,44 @@
+# Default configuration for database connections
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  # For details on connection pooling, see Rails configuration guide
+  # https://guides.rubyonrails.org/configuring.html#database-pooling
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
+
+# Development environment
+development:
+  primary:
+    <<: *default
+    database: findam_development
+    username: <%= ENV["DB_USERNAME"] || "postgres" %>
+    password: <%= ENV["DB_PASSWORD"] || "postgres" %>
+    host: <%= ENV["DB_HOST"] || "localhost" %>
+
+# Test environment
+test:
+  <<: *default
+  database: findam_test
+  username: <%= ENV["DB_USERNAME"] || "postgres" %>
+  password: <%= ENV["DB_PASSWORD"] || "postgres" %>
+  host: <%= ENV["DB_HOST"] || "localhost" %>
+
+# Production environment
+# Postgresql for scalable production usage
+prod: &prod
+  adapter: postgresql
+  username: <%= ENV["DB_USERNAME"] || "postgres" %>
+  password: <%= ENV["DB_PASSWORD"] || "postgres" %>
+  host: <%= ENV["DB_HOST"] %>
+  port: 5432
+
+production:
+  primary:
+    <<: *prod
+    database: <%= ENV["DB_DATABASE_NAME"] %>
+
+staging:
+  primary:
+    <<: *prod
+    database: <%= ENV["DB_DATABASE_NAME"] %>
