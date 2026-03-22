@@ -11,18 +11,19 @@ default: &default
 development:
   primary:
     <<: *default
-    database: findam_development
+    database: uniguideme_backend_development
+    host: <%= ENV["DB_HOST"] || "localhost" %>
     username: <%= ENV["DB_USERNAME"] || "postgres" %>
     password: <%= ENV["DB_PASSWORD"] || "postgres" %>
-    host: <%= ENV["DB_HOST"] || "localhost" %>
 
-# Test environment
+# Test environment (PostgreSQL, same as development)
 test:
-  <<: *default
-  database: findam_test
-  username: <%= ENV["DB_USERNAME"] || "postgres" %>
-  password: <%= ENV["DB_PASSWORD"] || "postgres" %>
-  host: <%= ENV["DB_HOST"] || "localhost" %>
+  primary:
+    <<: *default
+    database: uniguideme_backend_test
+    host: <%= ENV["DB_HOST"] || "localhost" %>
+    username: <%= ENV["DB_USERNAME"] || "postgres" %>
+    password: <%= ENV["DB_PASSWORD"] || "postgres" %>
 
 # Production environment
 # Postgresql for scalable production usage
