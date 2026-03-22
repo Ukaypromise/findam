@@ -17,23 +17,23 @@ class User < ActiveRecord::Base
     state :suspended
 
     event :submit_for_review do
-      transition :pending => :submitted
+      transition pending: :submitted
     end
 
     event :approve do
-      transition [:pending, :submitted, :rejected] => :approved
+      transition [ :pending, :submitted, :rejected ] => :approved
     end
 
     event :reject do
-      transition [:pending, :submitted] => :rejected
+      transition [ :pending, :submitted ] => :rejected
     end
 
     event :suspend do
-      transition [:approved, :submitted] => :suspended
+      transition [ :approved, :submitted ] => :suspended
     end
 
     event :resubmit do
-      transition :rejected => :submitted
+      transition rejected: :submitted
     end
 
     after_transition any => :approved do |user|

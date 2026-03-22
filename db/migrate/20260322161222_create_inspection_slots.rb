@@ -10,6 +10,6 @@ class CreateInspectionSlots < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    add_index :inspection_slots, [:listing_id, :is_booked]
+    add_index :inspection_slots, [ :listing_id, :is_booked ]
   end
 end

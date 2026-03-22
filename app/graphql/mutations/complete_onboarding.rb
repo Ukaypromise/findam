@@ -6,7 +6,7 @@ module Mutations
 
     field :landlord, Types::Objects::LandlordType, null: true
     field :success, Boolean, null: false
-    field :errors, [String], null: false
+    field :errors, [ String ], null: false
 
     def resolve
       current_user = context[:current_resource]

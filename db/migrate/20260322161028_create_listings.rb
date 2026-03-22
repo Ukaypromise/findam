@@ -22,6 +22,6 @@ class CreateListings < ActiveRecord::Migration[8.0]
     add_index :listings, :property_type
     add_index :listings, :status
     add_index :listings, :is_available
-    add_index :listings, [:city, :is_available, :status]
+    add_index :listings, [ :city, :is_available, :status ]
   end
 end

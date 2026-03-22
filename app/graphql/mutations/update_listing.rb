@@ -14,11 +14,11 @@ module Mutations
     argument :latitude, Float, required: false
     argument :longitude, Float, required: false
     argument :status, Types::Enums::ListingStatusEnumType, required: false
-    argument :photos, [ApolloUploadServer::Upload], required: false
+    argument :photos, [ ApolloUploadServer::Upload ], required: false
     argument :document, ApolloUploadServer::Upload, required: false
 
     field :listing, Types::Objects::ListingType, null: true
-    field :errors, [String], null: false
+    field :errors, [ String ], null: false
 
     def resolve(id:, **args)
       current_user = context[:current_resource]

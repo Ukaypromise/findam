@@ -6,7 +6,7 @@ module Mutations
     argument :listing_id, ID, required: true
 
     field :inspection_booking, Types::Objects::InspectionBookingType, null: true
-    field :errors, [String], null: false
+    field :errors, [ String ], null: false
 
     def resolve(slot_id:, listing_id:)
       current_user = context[:current_resource]

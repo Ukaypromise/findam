@@ -7,7 +7,7 @@ module Mutations
     argument :body, String, required: true
 
     field :message, Types::Objects::MessageType, null: true
-    field :errors, [String], null: false
+    field :errors, [ String ], null: false
 
     def resolve(recipient_id:, listing_id:, body:)
       current_user = context[:current_resource]
@@ -17,9 +17,9 @@ module Mutations
       listing = Listing.find(listing_id)
 
       tenant_id, landlord_id = if current_user.tenant?
-        [current_user.id, recipient.id]
+        [ current_user.id, recipient.id ]
       else
-        [recipient.id, current_user.id]
+        [ recipient.id, current_user.id ]
       end
 
       message = nil

@@ -6,7 +6,7 @@ module Mutations
 
     field :commission_payment, Types::Objects::CommissionPaymentType, null: true
     field :payment_url, String, null: true
-    field :errors, [String], null: false
+    field :errors, [ String ], null: false
 
     def resolve(listing_id:)
       current_user = context[:current_resource]

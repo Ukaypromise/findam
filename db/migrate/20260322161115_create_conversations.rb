@@ -9,6 +9,6 @@ class CreateConversations < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    add_index :conversations, [:tenant_id, :landlord_id, :listing_id], unique: true, name: "index_conversations_uniqueness"
+    add_index :conversations, [ :tenant_id, :landlord_id, :listing_id ], unique: true, name: "index_conversations_uniqueness"
   end
 end

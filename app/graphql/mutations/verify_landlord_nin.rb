@@ -5,7 +5,7 @@ module Mutations
     argument :landlord_id, ID, required: true
 
     field :landlord_profile, Types::Objects::LandlordProfileType, null: true
-    field :errors, [String], null: false
+    field :errors, [ String ], null: false
 
     def resolve(landlord_id:)
       current_user = context[:current_resource]

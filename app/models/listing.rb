@@ -25,19 +25,19 @@ class Listing < ApplicationRecord
     state :removed
 
     event :publish do
-      transition :draft => :published
+      transition draft: :published
     end
 
     event :rent do
-      transition :published => :rented
+      transition published: :rented
     end
 
     event :remove do
-      transition [:draft, :published, :rented] => :removed
+      transition [ :draft, :published, :rented ] => :removed
     end
 
     event :republish do
-      transition [:rented, :removed] => :published
+      transition [ :rented, :removed ] => :published
     end
   end
 

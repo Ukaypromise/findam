@@ -19,7 +19,7 @@ module Types
 
     field :landlord, Types::Objects::LandlordType, null: false
 
-    field :photos, [String], null: false
+    field :photos, [ String ], null: false
     field :document, String, null: true
 
     def photos

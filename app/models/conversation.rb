@@ -5,7 +5,7 @@ class Conversation < ApplicationRecord
 
   has_many :messages, dependent: :destroy
 
-  validates :tenant_id, uniqueness: { scope: [:landlord_id, :listing_id] }
+  validates :tenant_id, uniqueness: { scope: [ :landlord_id, :listing_id ] }
 
   scope :for_user, ->(user) {
     where(tenant_id: user.id).or(where(landlord_id: user.id))

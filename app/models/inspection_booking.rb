@@ -11,15 +11,15 @@ class InspectionBooking < ApplicationRecord
     state :completed
 
     event :confirm do
-      transition :pending => :confirmed
+      transition pending: :confirmed
     end
 
     event :cancel do
-      transition [:pending, :confirmed] => :cancelled
+      transition [ :pending, :confirmed ] => :cancelled
     end
 
     event :complete do
-      transition :confirmed => :completed
+      transition confirmed: :completed
     end
 
     after_transition any => :confirmed do |booking|

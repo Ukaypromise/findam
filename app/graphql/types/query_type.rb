@@ -16,8 +16,8 @@ module Types
       context.schema.object_from_id(id, context)
     end
 
-    field :nodes, [Types::NodeType, null: true], null: true, description: "Fetches a list of objects given a list of IDs." do
-      argument :ids, [ID], required: true, description: "IDs of the objects."
+    field :nodes, [ Types::NodeType, null: true ], null: true, description: "Fetches a list of objects given a list of IDs." do
+      argument :ids, [ ID ], required: true, description: "IDs of the objects."
     end
 
     def nodes(ids:)
@@ -25,7 +25,7 @@ module Types
     end
 
     # Listings
-    field :listings, [Types::Objects::ListingType], null: false do
+    field :listings, [ Types::Objects::ListingType ], null: false do
       argument :city, String, required: false
       argument :price_min, Float, required: false
       argument :price_max, Float, required: false
@@ -51,7 +51,7 @@ module Types
     end
 
     # Conversations
-    field :conversations, [Types::Objects::ConversationType], null: false
+    field :conversations, [ Types::Objects::ConversationType ], null: false
 
     def conversations
       current_user = context[:current_resource]
@@ -60,7 +60,7 @@ module Types
       Conversation.for_user(current_user).ordered
     end
 
-    field :messages, [Types::Objects::MessageType], null: false do
+    field :messages, [ Types::Objects::MessageType ], null: false do
       argument :conversation_id, ID, required: true
       argument :page, Integer, required: false
     end
@@ -85,7 +85,7 @@ module Types
     end
 
     # Inspections
-    field :available_slots, [Types::Objects::InspectionSlotType], null: false do
+    field :available_slots, [ Types::Objects::InspectionSlotType ], null: false do
       argument :listing_id, ID, required: true
     end
 
@@ -94,13 +94,13 @@ module Types
     end
 
     # Admin queries
-    field :pending_approvals, [Types::Objects::UserType], null: false
+    field :pending_approvals, [ Types::Objects::UserType ], null: false
 
     def pending_approvals
       current_user = context[:current_resource]
       raise GraphQL::ExecutionError, "Not authorized" unless current_user&.admin?
 
-      User.where(approval_status: ["pending", "submitted"]).order(created_at: :asc)
+      User.where(approval_status: [ "pending", "submitted" ]).order(created_at: :asc)
     end
 
     field :platform_stats, Types::Objects::PlatformStatsType, null: false
@@ -122,7 +122,7 @@ module Types
       }
     end
 
-    field :flagged_listings, [Types::Objects::FlaggedListingType], null: false
+    field :flagged_listings, [ Types::Objects::FlaggedListingType ], null: false
 
     def flagged_listings
       current_user = context[:current_resource]

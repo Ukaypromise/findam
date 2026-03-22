@@ -11,7 +11,7 @@ module Types
     field :tenant, Types::Objects::TenantType, null: false
     field :landlord, Types::Objects::LandlordType, null: false
     field :listing, Types::Objects::ListingType, null: false
-    field :messages, [Types::Objects::MessageType], null: false
+    field :messages, [ Types::Objects::MessageType ], null: false
 
     def messages
       object.messages.ordered

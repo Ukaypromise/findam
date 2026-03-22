@@ -10,15 +10,15 @@ class CommissionPayment < ApplicationRecord
     state :refunded
 
     event :mark_paid do
-      transition :pending => :paid
+      transition pending: :paid
     end
 
     event :mark_failed do
-      transition :pending => :failed
+      transition pending: :failed
     end
 
     event :refund do
-      transition :paid => :refunded
+      transition paid: :refunded
     end
 
     after_transition any => :paid do |payment|

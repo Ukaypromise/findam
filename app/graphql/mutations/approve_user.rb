@@ -5,7 +5,7 @@ module Mutations
     argument :user_id, ID, required: true
 
     field :user, Types::Objects::UserType, null: true
-    field :errors, [String], null: false
+    field :errors, [ String ], null: false
 
     def resolve(user_id:)
       current_user = context[:current_resource]

@@ -6,7 +6,7 @@ module Mutations
     argument :reason, String, required: false
 
     field :inspection_booking, Types::Objects::InspectionBookingType, null: true
-    field :errors, [String], null: false
+    field :errors, [ String ], null: false
 
     def resolve(booking_id:, reason: nil)
       current_user = context[:current_resource]

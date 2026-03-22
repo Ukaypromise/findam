@@ -7,7 +7,7 @@ module Mutations
     argument :ends_at, GraphQL::Types::ISO8601DateTime, required: true
 
     field :inspection_slot, Types::Objects::InspectionSlotType, null: true
-    field :errors, [String], null: false
+    field :errors, [ String ], null: false
 
     def resolve(listing_id:, starts_at:, ends_at:)
       current_user = context[:current_resource]

@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :listing do
-    association :landlord, factory: [:landlord, :approved]
+    association :landlord, factory: [ :landlord, :approved ]
     title { Faker::Lorem.sentence(word_count: 3) }
     description { Faker::Lorem.paragraph }
     price { Faker::Number.decimal(l_digits: 6, r_digits: 2) }
