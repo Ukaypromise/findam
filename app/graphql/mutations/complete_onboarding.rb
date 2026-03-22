@@ -2,26 +2,34 @@
 
 module Mutations
   class CompleteOnboarding < Mutations::BaseMutation
-    description "Complete the landlord's onboarding"
+    description "Complete the user's onboarding and submit for review"
 
     field :landlord, Types::Objects::LandlordType, null: true
     field :success, Boolean, null: false
-    field :errors, [ String ], null: false
+    field :errors, [String], null: false
 
     def resolve
-      current_user.update(
-        onboarding_completed: true,
-        onboarding_completed_at: Time.current,
-        approval_status: "submitted"
-      )
+      current_user = context[:current_resource]
+      raise GraphQL::ExecutionError, "Not authorized" unless current_user
 
-      raise GraphQL::ExecutionError.new "Error submitting onboarding", extensions: current_user.errors.to_hash unless current_user.save
+      ActiveRecord::Base.transaction do
+        current_user.update!(
+          onboarding_completed: true,
+          onboarding_completed_at: Time.current
+        )
+
+        unless current_user.submit_for_review
+          raise GraphQL::ExecutionError, "Cannot submit for review from current status: #{current_user.approval_status}"
+        end
+      end
 
       {
-        iec_user: current_user.reload,
+        landlord: current_user.reload,
         success: true,
         errors: []
       }
+    rescue ActiveRecord::RecordInvalid => e
+      { landlord: nil, success: false, errors: e.record.errors.full_messages }
     end
   end
 end

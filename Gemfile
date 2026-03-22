@@ -85,3 +85,6 @@ end
 gem "graphiql-rails", group: [ :development, :staging ]
 
 gem "apollo_upload_server", "~> 2.1"
+
+# State machines for managing workflow states
+gem "state_machines-activerecord"

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_22_133329) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_22_161435) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -42,6 +42,121 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_22_133329) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "commission_payments", force: :cascade do |t|
+    t.bigint "listing_id", null: false
+    t.bigint "tenant_id"
+    t.bigint "landlord_id", null: false
+    t.decimal "amount", precision: 12, scale: 2
+    t.decimal "tenant_percentage", precision: 5, scale: 2
+    t.decimal "landlord_percentage", precision: 5, scale: 2
+    t.string "status", default: "pending", null: false
+    t.string "paystack_reference"
+    t.datetime "paid_at"
+    t.string "payment_url"
+    t.datetime "landlord_confirmed_at"
+    t.datetime "tenant_confirmed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["landlord_id"], name: "index_commission_payments_on_landlord_id"
+    t.index ["listing_id"], name: "index_commission_payments_on_listing_id"
+    t.index ["paystack_reference"], name: "index_commission_payments_on_paystack_reference", unique: true
+    t.index ["status"], name: "index_commission_payments_on_status"
+    t.index ["tenant_id"], name: "index_commission_payments_on_tenant_id"
+  end
+
+  create_table "conversations", force: :cascade do |t|
+    t.bigint "tenant_id", null: false
+    t.bigint "landlord_id", null: false
+    t.bigint "listing_id", null: false
+    t.datetime "last_message_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["landlord_id"], name: "index_conversations_on_landlord_id"
+    t.index ["listing_id"], name: "index_conversations_on_listing_id"
+    t.index ["tenant_id", "landlord_id", "listing_id"], name: "index_conversations_uniqueness", unique: true
+    t.index ["tenant_id"], name: "index_conversations_on_tenant_id"
+  end
+
+  create_table "flagged_listings", force: :cascade do |t|
+    t.bigint "listing_id", null: false
+    t.bigint "reporter_id", null: false
+    t.string "reason", null: false
+    t.boolean "resolved", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["listing_id"], name: "index_flagged_listings_on_listing_id"
+    t.index ["reporter_id"], name: "index_flagged_listings_on_reporter_id"
+    t.index ["resolved"], name: "index_flagged_listings_on_resolved"
+  end
+
+  create_table "inspection_bookings", force: :cascade do |t|
+    t.bigint "tenant_id", null: false
+    t.bigint "landlord_id", null: false
+    t.bigint "listing_id", null: false
+    t.bigint "inspection_slot_id", null: false
+    t.string "status", default: "pending", null: false
+    t.string "cancelled_by"
+    t.string "cancellation_reason"
+    t.datetime "confirmed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["inspection_slot_id"], name: "index_inspection_bookings_on_inspection_slot_id"
+    t.index ["landlord_id"], name: "index_inspection_bookings_on_landlord_id"
+    t.index ["listing_id"], name: "index_inspection_bookings_on_listing_id"
+    t.index ["status"], name: "index_inspection_bookings_on_status"
+    t.index ["tenant_id"], name: "index_inspection_bookings_on_tenant_id"
+  end
+
+  create_table "inspection_slots", force: :cascade do |t|
+    t.bigint "landlord_id", null: false
+    t.bigint "listing_id", null: false
+    t.datetime "starts_at", null: false
+    t.datetime "ends_at", null: false
+    t.boolean "is_booked", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["landlord_id"], name: "index_inspection_slots_on_landlord_id"
+    t.index ["listing_id", "is_booked"], name: "index_inspection_slots_on_listing_id_and_is_booked"
+    t.index ["listing_id"], name: "index_inspection_slots_on_listing_id"
+  end
+
+  create_table "listings", force: :cascade do |t|
+    t.bigint "landlord_id", null: false
+    t.string "title", null: false
+    t.text "description", null: false
+    t.decimal "price", precision: 12, scale: 2, null: false
+    t.string "address", null: false
+    t.string "city", null: false
+    t.string "property_type", null: false
+    t.integer "bedrooms"
+    t.integer "bathrooms"
+    t.boolean "is_available", default: true, null: false
+    t.decimal "latitude", precision: 10, scale: 7
+    t.decimal "longitude", precision: 10, scale: 7
+    t.string "status", default: "draft", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["city", "is_available", "status"], name: "index_listings_on_city_and_is_available_and_status"
+    t.index ["city"], name: "index_listings_on_city"
+    t.index ["is_available"], name: "index_listings_on_is_available"
+    t.index ["landlord_id"], name: "index_listings_on_landlord_id"
+    t.index ["property_type"], name: "index_listings_on_property_type"
+    t.index ["status"], name: "index_listings_on_status"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.bigint "conversation_id", null: false
+    t.string "sender_type", null: false
+    t.bigint "sender_id", null: false
+    t.text "body", null: false
+    t.datetime "read_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["conversation_id"], name: "index_messages_on_conversation_id"
+    t.index ["read_at"], name: "index_messages_on_read_at"
+    t.index ["sender_type", "sender_id"], name: "index_messages_on_sender"
+  end
+
   create_table "profiles", force: :cascade do |t|
     t.string "type", null: false
     t.bigint "user_id", null: false
@@ -50,6 +165,13 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_22_133329) do
     t.text "short_bio"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "phone_number"
+    t.boolean "nin_verified", default: false, null: false
+    t.datetime "nin_verified_at"
+    t.boolean "certified", default: false, null: false
+    t.datetime "certified_at"
+    t.boolean "top_landlord", default: false, null: false
+    t.datetime "top_landlord_recalculated_at"
     t.index ["type"], name: "index_profiles_on_type"
     t.index ["user_id"], name: "index_profiles_on_user_id"
   end
@@ -222,6 +344,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_22_133329) do
     t.datetime "approved_at"
     t.datetime "rejected_at"
     t.text "rejection_reason"
+    t.text "suspension_reason"
     t.index ["approval_status"], name: "index_users_on_approval_status"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
@@ -233,6 +356,22 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_22_133329) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "commission_payments", "listings"
+  add_foreign_key "commission_payments", "users", column: "landlord_id"
+  add_foreign_key "commission_payments", "users", column: "tenant_id"
+  add_foreign_key "conversations", "listings"
+  add_foreign_key "conversations", "users", column: "landlord_id"
+  add_foreign_key "conversations", "users", column: "tenant_id"
+  add_foreign_key "flagged_listings", "listings"
+  add_foreign_key "flagged_listings", "users", column: "reporter_id"
+  add_foreign_key "inspection_bookings", "inspection_slots"
+  add_foreign_key "inspection_bookings", "listings"
+  add_foreign_key "inspection_bookings", "users", column: "landlord_id"
+  add_foreign_key "inspection_bookings", "users", column: "tenant_id"
+  add_foreign_key "inspection_slots", "listings"
+  add_foreign_key "inspection_slots", "users", column: "landlord_id"
+  add_foreign_key "listings", "users", column: "landlord_id"
+  add_foreign_key "messages", "conversations"
   add_foreign_key "profiles", "users"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade

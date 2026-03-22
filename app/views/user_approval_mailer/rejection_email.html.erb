@@ -1,0 +1,7 @@
+<h1>Account Application Update</h1>
+<p>Hi <%= @user.name || @user.email %>,</p>
+<p>Unfortunately, your FindAm account application was not approved.</p>
+<% if @reason.present? %>
+  <p><strong>Reason:</strong> <%= @reason %></p>
+<% end %>
+<p>You may update your profile and re-submit for review.</p>
