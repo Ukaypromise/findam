@@ -11,7 +11,7 @@ default: &default
 development:
   primary:
     <<: *default
-    database: uniguideme_backend_development
+    database: findam_development
     host: <%= ENV["DB_HOST"] || "localhost" %>
     username: <%= ENV["DB_USERNAME"] || "postgres" %>
     password: <%= ENV["DB_PASSWORD"] || "postgres" %>
@@ -20,7 +20,7 @@ development:
 test:
   primary:
     <<: *default
-    database: uniguideme_backend_test
+    database: findam_test
     host: <%= ENV["DB_HOST"] || "localhost" %>
     username: <%= ENV["DB_USERNAME"] || "postgres" %>
     password: <%= ENV["DB_PASSWORD"] || "postgres" %>

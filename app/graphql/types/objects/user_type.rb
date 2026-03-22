@@ -21,5 +21,23 @@ module Types
     field :tokens, GraphQL::Types::JSON
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
+    field :type, String
+    field :onboarding_completed, Boolean, null: false
+    field :onboarding_completed_at, GraphQL::Types::ISO8601DateTime
+    field :approval_status, String, null: false
+    field :approved_at, GraphQL::Types::ISO8601DateTime
+    field :rejected_at, GraphQL::Types::ISO8601DateTime
+    field :rejection_reason, String
+
+    field :landlord_profile, Types::Objects::LandlordProfileType, null: true
+    field :tenant_profile, Types::Objects::TenantProfileType, null: true
+
+    def landlord_profile
+      object.landlord? ? object.landlord_profile : nil
+    end
+
+    def tenant_profile
+      object.tenant? ? object.tenant_profile : nil
+    end
   end
 end

@@ -76,17 +76,27 @@ client: <client>
 
 Register a new user account.
 
+
 **Mutation:**
 ```graphql
-mutation RegUser {
-  userRegister(
-    confirmUrl: "https://lvh.me:3006/blah"
-    email: "user@example.com"
-    password: "securepassword123"
-    passwordConfirmation: "securepassword123"
+mutation RegisterUser {
+  userRegistration(
+    input:{
+      email: "promise@gmail.com"
+      password: "password123"
+      passwordConfirmation: "password123"
+      type: LANDLORD # or TENANT 
+      # confirmUrl:"https://lvh.me:3006/blah"
+    }
   ) {
     authenticatable {
       email
+    }
+    credentials {
+      accessToken
+      uid
+      client
+      expiry
     }
   }
 }
