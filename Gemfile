@@ -77,7 +77,7 @@ gem "mission_control-jobs"
 # Pagination & search
 gem "graphql-pagination", "~> 2.2"
 gem "kaminari-activerecord", "~> 1.2"
-gem "ransack", "~> 4.2.1"
+gem "ransack", "~> 4.4.1"
 
 group :staging do
   gem "recipient_interceptor"
