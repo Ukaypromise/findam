@@ -150,7 +150,7 @@ GEM
       base64
       fiber-storage
       logger
-    graphql-pagination (2.4.1)
+    graphql-pagination (2.5.0)
       graphql (>= 2.4.7)
     graphql_devise (2.1.0)
       devise_token_auth (>= 0.1.43, < 2.0)
@@ -517,7 +517,7 @@ DEPENDENCIES
   faker
   graphiql-rails
   graphql
-  graphql-pagination (~> 2.2)
+  graphql-pagination (~> 2.5)
   graphql_devise (~> 2.1)
   i18n-tasks
   importmap-rails

@@ -75,7 +75,7 @@ gem "rack-cors"
 gem "mission_control-jobs"
 
 # Pagination & search
-gem "graphql-pagination", "~> 2.2"
+gem "graphql-pagination", "~> 2.5"
 gem "kaminari-activerecord", "~> 1.2"
 gem "ransack", "~> 4.2.1"
 
